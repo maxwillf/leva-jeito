@@ -4,19 +4,7 @@ Atividade de segurança de redes cujo objetivo é certificar a integridade de ar
 O projeto está funcional mas infelizmente não foi implementado o HMAC.
 
 # Como rodar
-Para iniciar rastreio
 ```
-python3 direc.py --opcao="-i" <diretorio>
-```
-Para verificar mudanças
-```
-python3 direc.py --opcao="-t" <diretorio>
-```
-Para excluir vigia
-```
-python3 direc.py --opcao="-x" <diretorio>
-```
-
 python3 direc.py <metodo> <opcao> <pasta> <saída>
 ― <metodo> : indica o método a ser utilizado ( --hash ou --hmac senha)
 ― <opcao>: indica a ação a ser desempenhada pelo programa
@@ -29,7 +17,7 @@ alterações detectadas/exclusões
 ― <pasta> : indica a pasta a ser “guardada”
 ― <saida> : indica o arquivo de saída para o relatório (-o saída). Caso não seja passado este parâmetro, a
 saída deve ser feita em tela.
-
+```
 # Autor
 
 Max William Souto Filgueira
