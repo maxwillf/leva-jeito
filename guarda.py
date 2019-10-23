@@ -4,6 +4,14 @@ import hmac
 import json
 import argparse
 
+def resetHasher():
+  global hasher
+  if key is not None:
+    hasher = hmac.HMAC(key)
+  else:
+    hasher = hashlib.sha256()
+
+
 def writeToFile(hashDict,directory):
   dirNameHash = hashlib.sha256(directory.encode('utf-8')).hexdigest()
   folderPath = os.path.join('.vigia',intermediatePath)
@@ -31,10 +39,12 @@ def generateDirHashes(directory,key):
           data = f.read(1024)
           if not data:
             hashDict[os.path.join(path,name)] = hasher.hexdigest()
+            resetHasher()
             print('[W]',filename)
             print(hashDict[os.path.join(path,name)])
             break
-          hasher.update(data)
+          else:
+            hasher.update(data)
   writeToFile(hashDict,directory)
 
 def trackDirectory(directory,key):
@@ -56,14 +66,14 @@ def trackDirectory(directory,key):
       for name in files:
         filename = os.path.join(path,name)
         #print(filename)
-        if not os.path.isdir(os.path.join(path,name)):
+        if not os.path.isdir(filename):
           f = open(filename,'rb')
           while True:
             data = f.read(1024)
             if not data:
               pathName = os.path.join(path,name)
               hashDict[pathName] = hasher.hexdigest()
-
+              resetHasher()
               if pathName in oldHashDict:
                 if hashDict[pathName] != oldHashDict[pathName]:
                   print('[M]', pathName)
@@ -71,9 +81,9 @@ def trackDirectory(directory,key):
               else:
                 print('[W]', pathName)
                 print(hashDict[pathName])
-
               break
-            hasher.update(data)
+            else:
+              hasher.update(data)
     for filename in oldHashDict.keys():
       if filename not in hashDict.keys():
         print("[D]", filename)
